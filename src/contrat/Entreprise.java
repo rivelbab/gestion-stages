@@ -12,7 +12,7 @@ public interface Entreprise {
 
     String getNom();
 
-    Set<Stage> getStages();
+    Set<contrat.Stage> getStages();
 
-    boolean addStage(Stage stage);
+    boolean addStage(contrat.Stage stage);
 }

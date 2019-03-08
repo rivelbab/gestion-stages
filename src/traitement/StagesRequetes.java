@@ -12,7 +12,7 @@ public final class StagesRequetes {
     private final StagesIO io;
 
     public StagesRequetes(StagesIO io) {
-        this.io = null;
+        this.io = io;
     }
 
     /**
