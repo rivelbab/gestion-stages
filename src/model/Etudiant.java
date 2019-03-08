@@ -15,44 +15,44 @@ public final class Etudiant implements contrat.Etudiant {
 
 
     public Etudiant(String nom) {
-        this.nom = null;
-        this.stages = null;
-        competences = null;
+        this.nom = nom;
+        this.stages = new HashSet<>();
+        competences = new ArrayList<>();
     }
 
 
     @Override
     public String getNom() {
-        return null;
+        return nom;
     }
 
     @Override
     public Set<Stage> getStages() {
-        return null;
+        return stages;
     }
 
     @Override
     public List<Competence> getCompetences() {
-        return null;
-    }
-
-    @Override
-    public boolean addStage(Stage stage) {
-        return false;
-    }
-
-    @Override
-    public boolean addCompetence(Competence competence) {
-        return false;
+        return competences;
     }
 
     @Override
     public Enseignant getTuteur() {
-        return null;
+        return tuteur;
+    }
+
+    @Override
+    public boolean addStage(Stage stage) {
+        return stages.add(stage);
+    }
+
+    @Override
+    public boolean addCompetence(Competence competence) {
+        return competences.add(competence);
     }
 
     @Override
     public void setTuteur(Enseignant tuteur) {
-
+        this.tuteur = tuteur;
     }
 }

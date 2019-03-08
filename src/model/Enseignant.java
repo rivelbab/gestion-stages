@@ -17,16 +17,16 @@ public final class Enseignant implements contrat.Enseignant {
 
     @Override
     public String getNom() {
-        return null;
+        return nom;
     }
 
     @Override
     public Set<Etudiant> getEtudiants() {
-        return null;
+        return etudiants;
     }
 
     @Override
     public boolean addEtudiant(Etudiant etu) {
-        return false;
+        return etudiants.add(etu);
     }
 }

@@ -8,23 +8,23 @@ public final class Entreprise implements contrat.Entreprise {
     private final Set<Stage> stages;
 
     public Entreprise(String nom) {
-        this.nom = null;
-        this.stages = null;
+        this.nom = nom;
+        this.stages = new HashSet<>();;
     }
 
 
     @Override
     public String getNom() {
-        return null;
+        return nom;
     }
 
     @Override
     public Set<Stage> getStages() {
-        return null;
+        return stages;
     }
 
     @Override
     public boolean addStage(Stage stage) {
-        return false;
+        return stages.add(stage);
     }
 }
