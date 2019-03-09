@@ -4,6 +4,7 @@ import contrat.Etudiant;
 import contrat.Filiere;
 import contrat.Niveau;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public final class Classe implements contrat.Classe {

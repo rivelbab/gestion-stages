@@ -1,11 +1,21 @@
 package traitement;
 
-import contrat.Enseignant;
 import contrat.Etudiant;
+import contrat.Competence;
+import contrat.Filiere;
+import contrat.Niveau;
+import contrat.Statut;
+
+import model.Classe;
+import model.Stage;
+import model.Enseignant;
+import model.Entreprise;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Permet de charger les fichiers contenant les donnees des etudiants et des stages.
@@ -59,13 +69,14 @@ public final class StagesIO {
             final String titre = datas[1];
             final Competence competence = Competence.valueOf(datas[2]);
             final Niveau niveau = Niveau.valueOf(datas[3]);
-            final String statut = Statut.valueOf(datas[5]);
-            final String entreprise = new Entreprise(datas[4]);
+            final Statut statut = Statut.valueOf(datas[5]);
+            final Entreprise entreprise = new Entreprise(datas[4]);
 
             Stage stage = new Stage(id, titre, competence, niveau, entreprise);
-            stage.statut = statut;
+            stage.setStatut(statut);
 
-            stagesMap[id] = stage;
+            stagesMap.put(id, stage);
+
         });
 
         /*
@@ -85,14 +96,14 @@ public final class StagesIO {
             final String nomTuteur = datas[6];
 
             //== on verifie si ce nom n'existe pas deja puis on l'ajoute
-            if !etudiantsMap.containsKey(nom) {
-                etudiantsMap[nom] = new Etudiant(nom);
+            if (!etudiantsMap.containsKey(nom)) {
+                etudiantsMap.put(nom, new model.Etudiant(nom));
             }
-            Etudiant etu = etudiantsMap[nom];
+            Etudiant etu = etudiantsMap.get(nom);
             //=== on ajoute les competences ===
             if (competences.length > 0) {
                 for(int i=0; i < competences.length; i++) {
-                    Competence comp = Competence.valueOf(competences[i])
+                    Competence comp = Competence.valueOf(competences[i]);
                     etu.addCompetence(comp);
                 }
             }
@@ -102,13 +113,14 @@ public final class StagesIO {
             Classe mclasse = new Classe(niveau, filiere, annee);
             mclasse.addEtudiants(etu);
 
-            classesMap[niveau] = mclasse;
+            classesMap.put(niveau.getNiveau(), mclasse);
 
-            if !enseignantsMap.containsKey(nomTuteur) {
-                enseignantsMap[nomTuteur] = new Enseignant(nomTuteur);
+
+            if (!enseignantsMap.containsKey(nomTuteur)) {
+                enseignantsMap.put(nomTuteur, new model.Enseignant(nomTuteur));
             }
 
-            Enseignant tuteur = enseignantsMap[nomTuteur];
+            contrat.Enseignant tuteur = enseignantsMap.get(nomTuteur);
             //== on affecte un tuteur à l'étudiant et un étudiant au tuteur ===
             tuteur.addEtudiant(etu);
             etu.setTuteur(tuteur);

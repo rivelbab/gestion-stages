@@ -2,6 +2,7 @@ package model;
 
 import contrat.Etudiant;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public final class Enseignant implements contrat.Enseignant {

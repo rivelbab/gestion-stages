@@ -1,7 +1,5 @@
 package contrat;
 
-import model.Stage;
-
 import java.util.Set;
 
 

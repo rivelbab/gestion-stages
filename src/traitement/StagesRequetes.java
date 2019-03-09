@@ -3,9 +3,13 @@ package traitement;
 import contrat.Competence;
 import contrat.Etudiant;
 import contrat.Stage;
+import contrat.Enseignant;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public final class StagesRequetes {
 
@@ -28,11 +32,10 @@ public final class StagesRequetes {
          On récupère les enseignants dans stageIO,
          on convertit en stream pour pouvoir appliquer les filtres,
          on compare les noms avec celui passé en paramettre,
-         on caste la correspondance en Enseignant et enfin
          on retourne les etudinants de l'enseignant.
         ======
          */
-        contrat.Enseignant enseignant = (Enseignant) io.getEnseignants().stream().filter(
+        contrat.Enseignant enseignant = io.getEnseignants().stream().filter(
                 e -> e.getNom().equals(nom)
             ).findAny().get();
 
