@@ -14,7 +14,6 @@ import java.util.*;
 public final class StagesIO {
 
     //== declaration des variables pour parser les fichiers ==
-    private static final String SPACE = " ";
     private static final String COMMA = ",";
     private static final String HASH_KEY = "#";
 
@@ -56,14 +55,14 @@ public final class StagesIO {
             String[] datas = line.split(HASH_KEY);
 
             //== datas est un tableau contenant nos donnees, reste plus qu'a les recup
-            val id = datas[0];
-            val titre = datas[1];
-            val competence = Competence.valueOf(datas[2]);
-            val niveau = Niveau.valueOf(datas[3]);
-            val statut = Statut.valueOf(datas[5]);
-            val entreprise = new Entreprise(datas[4]);
+            final String id = datas[0];
+            final String titre = datas[1];
+            final Competence competence = Competence.valueOf(datas[2]);
+            final Niveau niveau = Niveau.valueOf(datas[3]);
+            final String statut = Statut.valueOf(datas[5]);
+            final String entreprise = new Entreprise(datas[4]);
 
-            val stage = new Stage(id, titre, competence, niveau, entreprise);
+            Stage stage = new Stage(id, titre, competence, niveau, entreprise);
             stage.statut = statut;
 
             stagesMap[id] = stage;
@@ -73,21 +72,48 @@ public final class StagesIO {
             === on fait la meme chose pour etudiant
          */
         Files.lines(etuFilePath).forEach(line -> {
+
             String[] datas = line.split(HASH_KEY);
 
-            val nom = datas[0];
+            final String nom = datas[0];
+            final Niveau niveau = Niveau.valueOf(datas[1]);
+            final Filiere filiere = Filiere.valueOf(datas[2]);
+            final String annee = datas[3];
+            //== les competences sont séparées par des virgules ==
+            String[] competences = datas[4].split(COMMA);
+            final String stageId = datas[5];
+            final String nomTuteur = datas[6];
+
             //== on verifie si ce nom n'existe pas deja puis on l'ajoute
             if !etudiantsMap.containsKey(nom) {
                 etudiantsMap[nom] = new Etudiant(nom);
             }
-            val etu = etudiantsMap[nom];
-            val niveau = Niveau.valueOf(datas[1]);
-            val filiere = Filiere.valueOf(datas[2]);
-            val annee = datas[3];
-            /* TODO : continuer l'extraction des donnees ici */
+            Etudiant etu = etudiantsMap[nom];
+            //=== on ajoute les competences ===
+            if (competences.length > 0) {
+                for(int i=0; i < competences.length; i++) {
+                    Competence comp = Competence.valueOf(competences[i])
+                    etu.addCompetence(comp);
+                }
+            }
+            //=== on ajoute les stages de l'etudiant ===
+            if (this.stagesMap.get(stageId) != null) etu.addStage(this.stagesMap.get(stageId));
+
+            Classe mclasse = new Classe(niveau, filiere, annee);
+            mclasse.addEtudiants(etu);
+
+            classesMap[niveau] = mclasse;
+
+            if !enseignantsMap.containsKey(nomTuteur) {
+                enseignantsMap[nomTuteur] = new Enseignant(nomTuteur);
+            }
+
+            Enseignant tuteur = enseignantsMap[nomTuteur];
+            //== on affecte un tuteur à l'étudiant et un étudiant au tuteur ===
+            tuteur.addEtudiant(etu);
+            etu.setTuteur(tuteur);
+
         });
-
-
     }
 
     /**
@@ -96,10 +122,12 @@ public final class StagesIO {
      */
     public List<contrat.Classe> getClasses() {
 
-        if (classesMap != null) {
-            return new ArrayList<>(classesMap.values());
-        }
-        return null;
+        List<contrat.Classe> classes = this.classesMap.values()
+                .stream()
+                .sorted(Comparator.comparing(contrat.Classe :: getNiveau))
+                .collect(Collectors.toList());
+
+        return classes;
     }
 
     /**
@@ -108,10 +136,12 @@ public final class StagesIO {
      */
     public List<contrat.Enseignant> getEnseignants(){
 
-        if (enseignantsMap != null) {
-            return  new ArrayList<>(enseignantsMap.values());
-        }
-        return null;
+        List<contrat.Enseignant> enseignants = this.enseignantsMap.values()
+                .stream()
+                .sorted(Comparator.comparing(contrat.Enseignant :: getNom))
+                .collect(Collectors.toList());
+
+        return enseignants;
     }
 
     public Set<contrat.Entreprise> getEntreprises(){
@@ -124,10 +154,12 @@ public final class StagesIO {
      */
     public List<contrat.Etudiant> getEtudiants(){
 
-        if (etudiantsMap != null) {
-            return new ArrayList<>(etudiantsMap.values());
-        }
-        return null;
+        List<contrat.Etudiant> etudiants = this.etudiantsMap.values()
+                .stream()
+                .sorted(Comparator.comparing(contrat.Etudiant::getNom))
+                .collect(Collectors.toList());
+
+        return etudiants;
     }
 
     /**
@@ -136,10 +168,12 @@ public final class StagesIO {
      */
     public List<contrat.Stage> getStages(){
 
-        if (stagesMap != null) {
-            return new ArrayList<>(stagesMap.values());
-        }
-        return null;
+        List<contrat.Stage> stages = this.stagesMap.values()
+                .stream()
+                .sorted(Comparator.comparing(contrat.Stage::getNiveau))
+                .collect(Collectors.toList());
+        
+        return stages;
     }
 
 }
