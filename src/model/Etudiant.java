@@ -55,4 +55,11 @@ public final class Etudiant implements contrat.Etudiant {
     public void setTuteur(Enseignant tuteur) {
         this.tuteur = tuteur;
     }
+
+    @Override
+    public String toString() {
+        return "Etudiant { " +
+                "nom = ' " + nom +
+                " ' }";
+    }
 }

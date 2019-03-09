@@ -22,7 +22,22 @@ public final class StagesRequetes {
      * @return l'ensemble de ses étudiants
      */
     public Set<contrat.Etudiant> etudiantsDeLEnseignant(String nom) {
-        return null;
+
+        /*
+        ======
+         On récupère les enseignants dans stageIO,
+         on convertit en stream pour pouvoir appliquer les filtres,
+         on compare les noms avec celui passé en paramettre,
+         on caste la correspondance en Enseignant et enfin
+         on retourne les etudinants de l'enseignant.
+        ======
+         */
+        contrat.Enseignant enseignant = (Enseignant) io.getEnseignants().stream().filter(
+                e -> e.getNom().equals(nom)
+            ).findAny().get();
+
+        return enseignant.getEtudiants();
+
     }
 
     /**
@@ -32,7 +47,23 @@ public final class StagesRequetes {
      * @return l'ensemble des enseignants qui encadrent des stages de cette compétence
      */
     public Set<contrat.Enseignant> enseignantEncadreCompetence(Competence comp) {
-        return null;
+
+        /*
+        =======
+        On récupère les enseignants dans stageIO,
+        on convertit en stream pour pouvoir appliquer les filtres,
+        on parcours la liste des etudiants puis leurs stages,
+        on compare les competences au paramettre et enfin
+        on transforme le tream en Set qu'on retourne
+        ========
+         */
+        return io.getEnseignants().stream().filter(
+                enseigant ->  enseigant.getEtudiants().stream().anyMatch(
+                        etu -> etu.getStages().stream().anyMatch(
+                                stage -> stage.getCompetence().equals(comp)
+                        )
+                )
+        ).collect(Collectors.toSet());
     }
 
     /**
@@ -43,6 +74,28 @@ public final class StagesRequetes {
      * selon ses compétences
      */
     public Map<Etudiant, Set<Stage>> etudiantsMatchStagesNonAffectes() {
-        return null;
+
+        Map<Etudiant, Set<Stage>> stageEtu = new HashMap<>();
+        Set<Stage> stages = new HashSet<>(io.getStages());
+
+        /*
+        =========
+         On récupère les étudiants
+         On parcours leur stage
+         On filtre sur les compétences de chaques stages de l'étudiant
+         On compare aux compétences de l'étudiant
+         On ajoute les correspondances dans le map
+         On retourne enfin le map
+        =========
+         */
+        io.getEtudiants().forEach(etu -> {
+                stages.stream().filter(
+                        s -> etu.getCompetences().contains(s.getCompetence())
+                ).collect(Collectors.toSet());
+
+                if(etu.getStages().isEmpty()) stageEtu.put(etu,stages);
+            });
+
+        return stageEtu;
     }
 }

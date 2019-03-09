@@ -60,4 +60,13 @@ public final class Stage implements contrat.Stage {
     public void setStatut(Statut statut) {
         this.statut = statut;
     }
+
+    @Override
+    public String toString() {
+        return "Stage { " +
+                "identifiant = " + identifiant +
+                ", titre = " + titre +
+                ", competence = " + competence +
+                "}";
+    }
 }

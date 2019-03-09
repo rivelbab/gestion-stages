@@ -52,4 +52,17 @@ public final class Classe implements contrat.Classe {
     public boolean removeEtudiant(Etudiant etu) {
         return etudiants != null && etudiants.remove(etu);
     }
+
+    /*
+       Conversion de la classe en string
+     */
+    @Override
+    public String toString() {
+
+        return "Classe { " +
+                "niveau = " + niveau +
+                ", filiere = " + filiere +
+                ", annee = ' " + annee +
+                " ' }";
+    }
 }

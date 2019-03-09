@@ -122,8 +122,7 @@ public final class StagesIO {
      */
     public List<contrat.Classe> getClasses() {
 
-        List<contrat.Classe> classes = this.classesMap.values()
-                .stream()
+        List<contrat.Classe> classes = this.classesMap.values().stream()
                 .sorted(Comparator.comparing(contrat.Classe :: getNiveau))
                 .collect(Collectors.toList());
 
@@ -136,8 +135,7 @@ public final class StagesIO {
      */
     public List<contrat.Enseignant> getEnseignants(){
 
-        List<contrat.Enseignant> enseignants = this.enseignantsMap.values()
-                .stream()
+        List<contrat.Enseignant> enseignants = this.enseignantsMap.values().stream()
                 .sorted(Comparator.comparing(contrat.Enseignant :: getNom))
                 .collect(Collectors.toList());
 
@@ -154,8 +152,7 @@ public final class StagesIO {
      */
     public List<contrat.Etudiant> getEtudiants(){
 
-        List<contrat.Etudiant> etudiants = this.etudiantsMap.values()
-                .stream()
+        List<contrat.Etudiant> etudiants = this.etudiantsMap.values().stream()
                 .sorted(Comparator.comparing(contrat.Etudiant::getNom))
                 .collect(Collectors.toList());
 
@@ -168,11 +165,10 @@ public final class StagesIO {
      */
     public List<contrat.Stage> getStages(){
 
-        List<contrat.Stage> stages = this.stagesMap.values()
-                .stream()
+        List<contrat.Stage> stages = this.stagesMap.values().stream()
                 .sorted(Comparator.comparing(contrat.Stage::getNiveau))
                 .collect(Collectors.toList());
-        
+
         return stages;
     }
 
