@@ -1,15 +1,12 @@
 package tests;
 
 import contrat.Competence;
+import org.testng.annotations.*;
 import traitement.StagesRequetes;
 import traitement.StagesIO;
 import model.*;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
-
+import java.io.IOException;
 import java.nio.file.Paths;
 
 import static org.testng.Assert.*;
@@ -21,22 +18,25 @@ public class StagesRequetesTest {
     private static final String DONNEES = "donnees";
 
     StagesRequetes requetes;
+    StagesIO sio;
 
     @BeforeMethod
-    public void setUp() {
-        StagesIO sio = new StagesIO(Paths.get(DONNEES, ETU_FILE), Paths.get(DONNEES, STAGES_FILE));
+    public void setUp() throws IOException {
+        sio = new StagesIO(Paths.get(DONNEES, ETU_FILE), Paths.get(DONNEES, STAGES_FILE));
+        sio.chargerDonnees();
         requetes = new StagesRequetes(sio);
     }
 
     @AfterMethod
     public void tearDown() {
         requetes = null;
+        sio = null;
     }
 
-    @Parameters({"nomTuteur", "sesEtudiants"})
+    @Parameters({"nom", "sesEtudiants"})
     @Test
-    public void testEtudiantsDeLEnseignant(String nomTuteur, String sesEtudiants) {
-        assertEquals(requetes.etudiantsDeLEnseignant(nomTuteur), sesEtudiants);
+    public void testEtudiantsDeLEnseignant(String nom, String sesEtudiants) {
+        assertEquals(requetes.etudiantsDeLEnseignant(nom), sesEtudiants);
     }
 
     @Parameters({"competence", "sesEnseignants"})

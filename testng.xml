@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="gestionStageRivel" verbose="1">
+    <parameter name="nom" value="Tuteur Gamma" />
+    <parameter name="competence" value="AMOA" />
+    <parameter name="sesEtudiants" value="[Etudiant { nom = ' Lina SOULIER ' }]" />
+    <parameter name="sesEnseignants" value="[Enseignant { nom = ' Tuteur Beta ' }]" />
     <test name="gestionStageTest">
-        <parameter name="nomTuteur" value="Tuteur Gamma" />
-        <parameter name="competence" value="AMOA" />
-        <parameter name="sesEtudiants" value="[Etudiant { nom = ' Lina SOULIER ' }]" />
-        <parameter name="sesEnseignants" value="[Enseignant { nom = ' Tuteur Beta ' }]" />
         <classes>
             <class name="tests.StagesRequetesTest">
                 <methods>
