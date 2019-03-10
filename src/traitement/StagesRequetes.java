@@ -61,7 +61,7 @@ public final class StagesRequetes {
         ========
          */
         return io.getEnseignants().stream().filter(
-                enseigant ->  enseigant.getEtudiants().stream().anyMatch(
+                enseignant ->  enseignant.getEtudiants().stream().anyMatch(
                         etu -> etu.getStages().stream().anyMatch(
                                 stage -> stage.getCompetence().equals(comp)
                         )
