@@ -1,9 +1,6 @@
 package traitement;
 
-import contrat.Competence;
-import contrat.Etudiant;
-import contrat.Stage;
-import contrat.Enseignant;
+import contrat.*;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -78,27 +75,21 @@ public final class StagesRequetes {
      */
     public Map<Etudiant, Set<Stage>> etudiantsMatchStagesNonAffectes() {
 
-        Map<Etudiant, Set<Stage>> stageEtu = new HashMap<>();
-        Set<Stage> stages = new HashSet<>(io.getStages());
+        Set<Stage> stageNonAffecte = io.getStages().stream().filter(
+                stage -> stage.getStatut().equals(Statut.NON_AFFECTE)
+        ).collect(Collectors.toSet());
+        
+        Set<Etudiant> etuSansStage = io.getEtudiants().stream().filter(
+                etu -> etu.getStages().isEmpty()
+        ).collect(Collectors.toSet());
 
-        /*
-        =========
-         On récupère les étudiants
-         On parcours leur stage
-         On filtre sur les compétences de chaques stages de l'étudiant
-         On compare aux compétences de l'étudiant
-         On ajoute les correspondances dans le map
-         On retourne enfin le map
-        =========
-         */
-        io.getEtudiants().forEach(etu -> {
-                stages.stream().filter(
-                        s -> etu.getCompetences().contains(s.getCompetence())
-                ).collect(Collectors.toSet());
+        Map<Etudiant,Set<Stage>> etudiantStages = new HashMap<>();
 
-                if(etu.getStages().isEmpty()) stageEtu.put(etu,stages);
-            });
-
-        return stageEtu;
+        for(Etudiant etu : etuSansStage){
+            etudiantStages.put(etu,stageNonAffecte.stream().filter(
+                    stage -> etu.getCompetences().contains(stage.getCompetence())
+            ).collect(Collectors.toSet()));
+        }
+        return etudiantStages;
     }
 }

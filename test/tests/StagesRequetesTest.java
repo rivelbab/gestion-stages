@@ -8,6 +8,7 @@ import model.*;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.stream.Collectors;
 
 import static org.testng.Assert.*;
 
@@ -19,6 +20,7 @@ public class StagesRequetesTest {
 
     StagesRequetes requetes;
     StagesIO sio;
+
 
     @BeforeMethod
     public void setUp() throws IOException {
